@@ -1,12 +1,12 @@
 package com.example.authservice.service;
 
-import com.example.authservice.Repository.UserRepository;
 import com.example.authservice.dto.LoginRequest;
-import com.example.authservice.entity.User;
+import com.example.authservice.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,21 +14,21 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @Override
     public String login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
 
-        authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
 
-        return "Login Successful";
+        UserDetails userDetails =
+                (UserDetails) authentication.getPrincipal();
+
+        return jwtService.generateToken(userDetails);
     }
 }
