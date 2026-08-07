@@ -12,11 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
-
-
     private final User user;
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
@@ -27,14 +23,12 @@ public class CustomUserDetails implements UserDetails {
         );
     }
 
-
     @Override
     public String getPassword() {
 
         return user.getPassword();
 
     }
-
 
     @Override
     public String getUsername() {
@@ -43,14 +37,12 @@ public class CustomUserDetails implements UserDetails {
 
     }
 
-
     @Override
     public boolean isAccountNonExpired() {
 
         return true;
 
     }
-
 
     @Override
     public boolean isAccountNonLocked() {
@@ -59,20 +51,15 @@ public class CustomUserDetails implements UserDetails {
 
     }
 
-
     @Override
     public boolean isCredentialsNonExpired() {
 
         return true;
 
     }
-
-
     @Override
     public boolean isEnabled() {
 
         return true;
-
     }
-
 }
