@@ -4,6 +4,7 @@ import com.example.authservice.dto.RegisterRequest;
 import com.example.authservice.entity.Role;
 import com.example.authservice.entity.User;
 import com.example.authservice.Repository.UserRepository;
+import com.example.authservice.exception.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String register(RegisterRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
 
-
-        if(userRepository.existsByEmail(request.getEmail())){
-
-            throw new RuntimeException("Email already registered");
+            throw new UserAlreadyExistsException("Email already registered");
 
         }
 
