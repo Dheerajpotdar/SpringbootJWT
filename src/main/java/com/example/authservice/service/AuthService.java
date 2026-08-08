@@ -1,9 +1,11 @@
 package com.example.authservice.service;
 
 import com.example.authservice.dto.LoginRequest;
+import com.example.authservice.dto.LoginResponse;
 
 public interface AuthService {
 
-    String login(LoginRequest request);
-
+    LoginResponse login(LoginRequest request);
+    LoginResponse refreshToken(String refreshToken);
+    void logout(String refreshToken);
 }
